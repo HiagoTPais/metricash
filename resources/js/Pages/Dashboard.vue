@@ -1,0 +1,123 @@
+<script setup lang="ts">
+import MainLayout from '@/Layouts/MainLayout.vue'
+import { ref } from 'vue'
+import FinanceChart from '@/Components/FinanceChart.vue'
+
+// Icons components (you'll need to create these or use a library like @heroicons/vue)
+const ArrowUpIcon = {
+    template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+    </svg>`
+}
+
+const ArrowDownIcon = {
+    template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+    </svg>`
+}
+
+const stats = ref([
+    {
+        name: 'Total Balance',
+        value: '$24,563.00',
+        change: { type: 'increase', value: '2.5%' },
+        icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>`
+        }
+    },
+    {
+        name: 'Monthly Income',
+        value: '$8,753.00',
+        change: { type: 'increase', value: '4.2%' },
+        icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>`
+        }
+    },
+    {
+        name: 'Monthly Expenses',
+        value: '$4,251.00',
+        change: { type: 'decrease', value: '1.1%' },
+        icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+            </svg>`
+        }
+    },
+    {
+        name: 'Profit Margin',
+        value: '24.5%',
+        change: { type: 'increase', value: '3.2%' },
+        icon: {
+            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>`
+        }
+    }
+])
+
+const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }).format(amount)
+}
+</script>
+
+<template>
+    <MainLayout>
+        <template #default>
+            <div class="space-y-6">
+                <!-- Page Header -->
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+                        <p class="mt-2 text-sm text-gray-700">Your financial overview</p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <div v-for="stat in stats" :key="stat.name" class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <component :is="stat.icon" class="h-6 w-6 text-gray-400" aria-hidden="true" />
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">{{ stat.name }}</dt>
+                                        <dd class="flex items-baseline">
+                                            <div class="text-2xl font-semibold text-gray-900">{{ stat.value }}</div>
+                                            <div :class="[
+                                                stat.change.type === 'increase' ? 'text-green-600' : 'text-red-600',
+                                                'ml-2 flex items-baseline text-sm font-semibold'
+                                            ]">
+                                                <component :is="stat.change.type === 'increase' ? 'ArrowUpIcon' : 'ArrowDownIcon'" 
+                                                    class="self-center flex-shrink-0 h-5 w-5" 
+                                                    aria-hidden="true" 
+                                                />
+                                                <span class="sr-only">
+                                                    {{ stat.change.type === 'increase' ? 'Increased' : 'Decreased' }} by
+                                                </span>
+                                                {{ stat.change.value }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div>
+                    <FinanceChart />
+                </div>
+            </div>
+        </template>
+    </MainLayout>
+</template>
