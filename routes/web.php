@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IncomeExpenseController;
+use App\Http\Controllers\IndicatorsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome');
+// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -23,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/income-expenses', [IncomeExpenseController::class, 'index'])->name('income-expenses.index');
     Route::post('/income-expenses/store', [IncomeExpenseController::class, 'store'])->name('income-expenses.store');
     Route::put('/income-expenses/{income_expense}', [IncomeExpenseController::class, 'update'])->name('income-expenses.update');
+    
+    Route::get('/indicators', [IndicatorsController::class, 'index'])->name('indicators.index');
 });
 
 require __DIR__.'/auth.php';

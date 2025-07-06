@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\IncomeExpense;
+use Database\Seeders\FinancialDataSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,5 +23,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         IncomeExpense::factory(40)->create();
+        
+        // Seed financial data for indicators
+        $this->call(FinancialDataSeeder::class);
     }
 }
