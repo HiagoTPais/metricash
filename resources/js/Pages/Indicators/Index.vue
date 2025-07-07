@@ -6,7 +6,6 @@
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <div>
                         <h1 class="text-2xl font-semibold text-gray-900">Financial Indicators</h1>
-                        <p class="mt-2 text-sm text-gray-700">Monitor your financial performance and projections</p>
                     </div>
                     <div class="mt-4 sm:mt-0">
                         <div class="flex space-x-3">

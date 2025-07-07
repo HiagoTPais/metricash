@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import MainLayout from '@/Layouts/MainLayout.vue'
 import { ref } from 'vue'
-import FinanceChart from '@/Components/FinanceChart.vue'
 
 // Icons components (you'll need to create these or use a library like @heroicons/vue)
 const ArrowUpIcon = {
@@ -75,7 +74,6 @@ const formatCurrency = (amount: number) => {
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <div>
                         <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
-                        <p class="mt-2 text-sm text-gray-700">Your financial overview</p>
                     </div>
                 </div>
 
@@ -111,11 +109,6 @@ const formatCurrency = (amount: number) => {
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-                <div>
-                    <FinanceChart />
                 </div>
             </div>
         </template>
