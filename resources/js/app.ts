@@ -6,8 +6,13 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import mask from './Directives/mask';
+import { Buffer } from 'buffer';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+if (!window.Buffer) {
+  window.Buffer = Buffer;
+}
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -27,3 +32,5 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+

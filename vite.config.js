@@ -18,4 +18,19 @@ export default defineConfig({
             },
         }),
     ],
+    define: {
+        global: 'window',
+        'process.env': {},
+    },
+    optimizeDeps: {
+        include: [
+            'buffer',
+            'process',
+            'bip39',
+            'bip32',
+            'bitcoinjs-lib',
+            'ethereumjs-util',
+            '@ethersproject/address',
+        ], // 👈 inclui dependências críticas no pré-bundle
+    },
 });

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MainLayout from '@/Layouts/MainLayout.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 // Icons components (you'll need to create these or use a library like @heroicons/vue)
 const ArrowUpIcon = {
@@ -15,48 +16,77 @@ const ArrowDownIcon = {
     </svg>`
 }
 
-const stats = ref([
+const stats = ref<{
+    name: string,
+    value: string | null,
+    change: { type: string, value: string },
+    icon: any
+}[]>([
     {
         name: 'Total Balance',
-        value: '$24,563.00',
-        change: { type: 'increase', value: '2.5%' },
-        icon: {
-            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>`
-        }
+        value: null,
+        change: { type: 'increase', value: '' },
+        icon: ArrowUpIcon
     },
     {
         name: 'Monthly Income',
-        value: '$8,753.00',
-        change: { type: 'increase', value: '4.2%' },
-        icon: {
-            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>`
-        }
+        value: null,
+        change: { type: 'increase', value: '' },
+        icon: ArrowUpIcon
     },
     {
         name: 'Monthly Expenses',
-        value: '$4,251.00',
-        change: { type: 'decrease', value: '1.1%' },
-        icon: {
-            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-            </svg>`
-        }
+        value: null,
+        change: { type: 'decrease', value: '' },
+        icon: ArrowDownIcon
     },
     {
         name: 'Profit Margin',
-        value: '24.5%',
-        change: { type: 'increase', value: '3.2%' },
-        icon: {
-            template: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>`
-        }
+        value: null,
+        change: { type: 'increase', value: '' },
+        icon: ArrowUpIcon
     }
 ])
+
+const statsLoading = ref(true)
+
+const currencies = ref<any>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const currencyList = [
+    { id: 'usd', name: 'US Dollar', symbol: 'USD' },
+    { id: 'eur', name: 'Euro', symbol: 'EUR' },
+    { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC' },
+    { id: 'ethereum', name: 'Ethereum', symbol: 'ETH' },
+    { id: 'brl', name: 'Brazilian Real', symbol: 'BRL' },
+    { id: 'gbp', name: 'British Pound', symbol: 'GBP' },
+    { id: 'jpy', name: 'Japanese Yen', symbol: 'JPY' },
+]
+
+onMounted(async () => {
+    try {
+        // Fetch dashboard stats
+        const statsRes = await axios.get('/api/dashboard-stats')
+        const s = statsRes.data
+        stats.value[0].value = formatCurrency(s.total_balance)
+        stats.value[1].value = formatCurrency(s.monthly_income)
+        stats.value[2].value = formatCurrency(s.monthly_expenses)
+        stats.value[3].value = s.profit_margin.toFixed(2) + '%'
+        statsLoading.value = false
+    } catch (e) {
+        statsLoading.value = false
+    }
+
+    try {
+        const res = await axios.get('/api/currencies')
+        currencies.value = res.data
+    } catch (e: any) {
+        error.value = 'Failed to load currency data.'
+    } finally {
+        loading.value = false
+    }
+})
 
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -89,25 +119,68 @@ const formatCurrency = (amount: number) => {
                                     <dl>
                                         <dt class="text-sm font-medium text-gray-500 truncate">{{ stat.name }}</dt>
                                         <dd class="flex items-baseline">
-                                            <div class="text-2xl font-semibold text-gray-900">{{ stat.value }}</div>
-                                            <div :class="[
-                                                stat.change.type === 'increase' ? 'text-green-600' : 'text-red-600',
-                                                'ml-2 flex items-baseline text-sm font-semibold'
-                                            ]">
-                                                <component :is="stat.change.type === 'increase' ? 'ArrowUpIcon' : 'ArrowDownIcon'" 
-                                                    class="self-center flex-shrink-0 h-5 w-5" 
-                                                    aria-hidden="true" 
-                                                />
-                                                <span class="sr-only">
-                                                    {{ stat.change.type === 'increase' ? 'Increased' : 'Decreased' }} by
-                                                </span>
-                                                {{ stat.change.value }}
+                                            <div class="text-2xl font-semibold text-gray-900">
+                                                <span v-if="!statsLoading && stat.value !== null">{{ stat.value }}</span>
+                                                <span v-else class="text-gray-400 animate-pulse">Loading...</span>
                                             </div>
+                                            <!-- Optionally, you can show change values if you want -->
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- CoinMarketCap-style Table -->
+                <div class="mt-10">
+                    <h2 class="text-xl font-semibold mb-4">Market Overview</h2>
+                    <div class="bg-white shadow rounded-lg overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Price (USD)</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">24h Change</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Market Cap</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-if="loading">
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">Loading...</td>
+                                </tr>
+                                <tr v-else-if="error">
+                                    <td colspan="6" class="px-6 py-4 text-center text-red-500">{{ error }}</td>
+                                </tr>
+                                <tr v-else v-for="(currency, idx) in currencyList" :key="currency.id">
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ idx + 1 }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ currency.name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold">{{ currency.symbol }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <span v-if="currencies && currencies[currency.id] && currencies[currency.id].usd">
+                                            {{ formatCurrency(currencies[currency.id].usd) }}
+                                        </span>
+                                        <span v-else>-</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <span v-if="currencies && currencies[currency.id] && currencies[currency.id].usd_24h_change">
+                                            <span :class="currencies[currency.id].usd_24h_change >= 0 ? 'text-green-600' : 'text-red-600'">
+                                                {{ currencies[currency.id].usd_24h_change.toFixed(2) }}%
+                                            </span>
+                                        </span>
+                                        <span v-else>-</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <span v-if="currencies && currencies[currency.id] && currencies[currency.id].usd_market_cap">
+                                            {{ formatCurrency(currencies[currency.id].usd_market_cap) }}
+                                        </span>
+                                        <span v-else>-</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

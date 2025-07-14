@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IncomeExpenseController;
 use App\Http\Controllers\IndicatorsController;
 use App\Http\Controllers\CryptoController;
+use App\Http\Controllers\CurrencyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,5 +38,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/crypto/convert', [CryptoController::class, 'convertCurrency'])->name('crypto.convert');
     Route::get('/crypto/wallet-address', [CryptoController::class, 'getWalletAddress'])->name('crypto.wallet.address');
 });
+
+// Public API route for currency data
+Route::get('/api/currencies', [CurrencyController::class, 'index']);
+// Public API route for dashboard stats
+Route::get('/api/dashboard-stats', [CurrencyController::class, 'dashboardStats']);
 
 require __DIR__.'/auth.php';

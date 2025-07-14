@@ -23,7 +23,6 @@
                 <div class="bg-white shadow rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Account Balances</h3>
-                        <p class="mt-1 text-sm text-gray-500">Total balance per account for the selected period</p>
                     </div>
                     <div class="px-4 py-5 sm:p-6">
                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -50,7 +49,6 @@
                 <div class="bg-white shadow rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Income vs Expenses</h3>
-                        <p class="mt-1 text-sm text-gray-500">{{ period === 'monthly' ? 'Monthly' : 'Annual' }} comparison</p>
                     </div>
                     <div class="px-4 py-5 sm:p-6">
                         <div class="space-y-4">
@@ -82,7 +80,6 @@
                 <div class="bg-white shadow rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Profit/Loss Analysis</h3>
-                        <p class="mt-1 text-sm text-gray-500">Financial performance for the selected period</p>
                     </div>
                     <div class="px-4 py-5 sm:p-6">
                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -110,7 +107,6 @@
                 <div class="bg-white shadow rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Projected Cash Flow</h3>
-                        <p class="mt-1 text-sm text-gray-500">3-month projection based on historical data</p>
                     </div>
                     <div class="px-4 py-5 sm:p-6">
                         <div class="space-y-4">
@@ -152,32 +148,6 @@
                     </div>
                 </div>
 
-                <!-- Equity Change Section -->
-                <div class="bg-white shadow rounded-lg">
-                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Change in Equity</h3>
-                        <p class="mt-1 text-sm text-gray-500">Net change in equity for the selected period</p>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="text-lg font-medium text-gray-900">Net Equity Change</h4>
-                                    <p class="text-sm text-gray-500">Total change in equity accounts</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-3xl font-bold" 
-                                        :class="equityChange.is_positive ? 'text-green-600' : 'text-red-600'">
-                                        {{ formatCurrency(equityChange.change) }}
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        {{ equityChange.is_positive ? 'Increase' : 'Decrease' }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </template>
     </MainLayout>

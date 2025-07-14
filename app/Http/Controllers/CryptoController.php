@@ -73,13 +73,19 @@ class CryptoController extends Controller
             'is_active' => true,
         ]);
 
-        $wallet = $this->walletService->createWallet();
+        // Optionally generate QR code for the address
+        $qrCode = $this->generateQRCode($address);
+
         return response()->json([
             'success' => true,
-            'wallet' => $wallet
+            'wallet' => [
+                'id' => $wallet->id,
+                'name' => $wallet->name,
+                'currency' => $wallet->currency,
+                'address' => $wallet->address,
+                'qr_code' => $qrCode,
+            ]
         ]);
-
-        return redirect()->back()->with('success', 'Wallet created successfully!');
     }
 
     public function sendCrypto(Request $request)
