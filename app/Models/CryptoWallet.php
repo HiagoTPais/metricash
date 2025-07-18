@@ -15,7 +15,6 @@ class CryptoWallet extends Model
         'name',
         'currency',
         'address',
-        'private_key',
         'balance',
         'is_active',
         'metadata'
@@ -25,10 +24,6 @@ class CryptoWallet extends Model
         'balance' => 'decimal:8',
         'is_active' => 'boolean',
         'metadata' => 'array'
-    ];
-
-    protected $hidden = [
-        'private_key'
     ];
 
     public function user()

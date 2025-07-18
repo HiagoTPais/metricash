@@ -31,6 +31,7 @@
         "@scure/base": "^1.2.6",
         "@scure/bip39": "^1.6.0",
         "bip32": "^5.0.0-rc.0",
+        "bip39": "^3.1.0",
         "bitcoinjs-lib": "^6.1.7",
         "buffer": "^6.0.3",
         "chart.js": "^4.4.9",
@@ -40,7 +41,10 @@
         "exceljs": "^4.4.0",
         "font-awesome": "^4.7.0",
         "process": "^0.11.10",
+        "remove": "^0.1.5",
         "tiny-secp256k1": "^2.2.4",
-        "vue-chartjs": "^5.3.2"
+        "vue-chartjs": "^5.3.2",
+        "vue3-xlsx": "^1.1.2",
+        "xlsx": "^0.18.5"
     }
 }

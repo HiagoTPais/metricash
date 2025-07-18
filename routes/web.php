@@ -9,9 +9,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome');
-// });
+Route::get('/', function () {
+    return Inertia::render('Welcome');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -31,8 +31,8 @@ Route::middleware(['auth'])->group(function () {
     
     // Crypto routes
     Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
-    Route::post('/crypto/wallets', [CryptoController::class, 'createWallet'])->name('crypto.wallets.create');
-    Route::post('/crypto/send', [CryptoController::class, 'sendCrypto'])->name('crypto.send');
+    Route::post('/crypto/wallets', [CryptoController::class, 'setCreatedWallet'])->name('crypto.wallets.create');
+    Route::post('/crypto/send', [CryptoController::class, 'setSentCrypto'])->name('crypto.send');
     Route::get('/crypto/transactions', [CryptoController::class, 'getTransactionHistory'])->name('crypto.transactions');
     Route::get('/crypto/transactions-page', [CryptoController::class, 'transactionsPage'])->name('crypto.transactions.page');
     Route::post('/crypto/convert', [CryptoController::class, 'convertCurrency'])->name('crypto.convert');

@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('currency'); // BTC, ETH, USDT, etc.
             $table->string('address')->unique();
-            $table->string('private_key')->nullable(); // Encrypted
             $table->decimal('balance', 18, 8)->default(0);
             $table->boolean('is_active')->default(true);
             $table->json('metadata')->nullable(); // Additional wallet info
