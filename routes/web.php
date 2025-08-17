@@ -18,10 +18,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
-    // Route::get('/home', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/income-expenses', [IncomeExpenseController::class, 'index'])->name('income-expenses.index');
     Route::post('/income-expenses/store', [IncomeExpenseController::class, 'store'])->name('income-expenses.store');
@@ -29,19 +30,16 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/indicators', [IndicatorsController::class, 'index'])->name('indicators.index');
     
-    // Crypto routes
-    Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
-    Route::post('/crypto/wallets', [CryptoController::class, 'setCreatedWallet'])->name('crypto.wallets.create');
-    Route::post('/crypto/send', [CryptoController::class, 'setSentCrypto'])->name('crypto.send');
-    Route::get('/crypto/transactions', [CryptoController::class, 'getTransactionHistory'])->name('crypto.transactions');
-    Route::get('/crypto/transactions-page', [CryptoController::class, 'transactionsPage'])->name('crypto.transactions.page');
-    Route::post('/crypto/convert', [CryptoController::class, 'convertCurrency'])->name('crypto.convert');
-    Route::get('/crypto/wallet-address', [CryptoController::class, 'getWalletAddress'])->name('crypto.wallet.address');
+    // Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
+    // Route::post('/crypto/wallets', [CryptoController::class, 'setCreatedWallet'])->name('crypto.wallets.create');
+    // Route::post('/crypto/send', [CryptoController::class, 'setSentCrypto'])->name('crypto.send');
+    // Route::get('/crypto/transactions', [CryptoController::class, 'getTransactionHistory'])->name('crypto.transactions');
+    // Route::get('/crypto/transactions-page', [CryptoController::class, 'transactionsPage'])->name('crypto.transactions.page');
+    // Route::post('/crypto/convert', [CryptoController::class, 'convertCurrency'])->name('crypto.convert');
+    // Route::get('/crypto/wallet-address', [CryptoController::class, 'getWalletAddress'])->name('crypto.wallet.address');
 });
 
-// Public API route for currency data
 Route::get('/api/currencies', [CurrencyController::class, 'index']);
-// Public API route for dashboard stats
 Route::get('/api/dashboard-stats', [CurrencyController::class, 'dashboardStats']);
 
 require __DIR__.'/auth.php';

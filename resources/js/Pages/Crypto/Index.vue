@@ -2,7 +2,6 @@
   <MainLayout>
     <template #default>
       <div class="space-y-6">
-        <!-- Page Header -->
         <div class="sm:flex sm:items-center sm:justify-between">
           <div>
             <h1 class="text-2xl font-semibold text-gray-900">Cryptocurrency</h1>
@@ -18,7 +17,6 @@
           </div>
         </div>
 
-        <!-- Total Balance Cards -->
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
@@ -248,7 +246,6 @@
         </div>
       </div>
 
-      <!-- Create Wallet Modal -->
       <div v-if="showCreateWalletModal"
         class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
